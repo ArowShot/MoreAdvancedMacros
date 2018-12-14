@@ -1,14 +1,15 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "moreadvancedmacros",
+  "name": "More Advanced Macros",
+  "description": "
+An extension for the AdvancedMacros mod which adds experimental features or features outside of the scope of AdvancedMacros.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["ArowShot"],
+  "credits": "TheIncgi for making AdvancedMacros and The Forge and FML guys",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

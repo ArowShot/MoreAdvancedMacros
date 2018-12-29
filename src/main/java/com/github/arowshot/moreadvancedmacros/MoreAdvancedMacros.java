@@ -20,16 +20,17 @@ import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 import com.github.arowshot.moreadvancedmacros.lua.libraries.Json;
 import com.github.arowshot.moreadvancedmacros.lua.libraries.MinecraftSettings;
+import com.github.arowshot.moreadvancedmacros.lua.libraries.Movement;
 import com.github.arowshot.moreadvancedmacros.lua.libraries.WebSockets;
 import com.theincgi.advancedMacros.AdvancedMacros;
 import com.theincgi.advancedMacros.misc.JarLibSearcher;
 import com.theincgi.advancedMacros.publicInterfaces.LuaPlugin;
 
-@Mod(modid = MoreAdvancedMacros.MODID, version = MoreAdvancedMacros.VERSION)
+@Mod(modid = MoreAdvancedMacros.MODID, version = MoreAdvancedMacros.VERSION, dependencies = "required-after:advancedmacros")
 public class MoreAdvancedMacros
 {
     public static final String MODID = "moreadvancedmacros";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.1";
     public static List<LuaPlugin> libraries = new ArrayList<LuaPlugin>();
     
     private JarLibSearcher jarLibSearcher;
@@ -61,5 +62,6 @@ public class MoreAdvancedMacros
 		libraries.add(new Json());
 		libraries.add(new WebSockets());
 		libraries.add(new MinecraftSettings());
+		libraries.add(new Movement());
     }
 }

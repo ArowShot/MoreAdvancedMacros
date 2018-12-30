@@ -24,7 +24,7 @@ buildscript {
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "java"
 
-version = "1.0"
+version = "1.1"
 group = "com.github.arowshot.moreadvancedmacros" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "moreadvancedmacros"
 
@@ -82,6 +82,12 @@ shadowJar {
    dependencies {
       exclude(dependency("com.github.TheIncgi:AdvancedMacros-1.12.2:622be1b634"))
    }
+   
+   classifier ''
+}
+
+reobf {
+    shadowJar {}
 }
 
 processResources {

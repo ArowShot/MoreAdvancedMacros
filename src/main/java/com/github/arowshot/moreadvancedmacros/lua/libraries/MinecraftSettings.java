@@ -45,6 +45,12 @@ public class MinecraftSettings extends TwoArgFunction implements LuaPlugin {
 			}
 		});
 		
+		library.set("getfps", new ZeroArgFunction() {
+	        @Override
+			public LuaValue call() {
+				return LuaValue.valueOf(Minecraft.getMinecraft().getDebugFPS());
+			}
+		});
 		return library;
 	}
 	static class newWs extends OneArgFunction {

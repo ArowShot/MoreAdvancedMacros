@@ -14,6 +14,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 import com.theincgi.advancedMacros.publicInterfaces.LuaPlugin;
+import com.theincgi.advancedMacros.AdvancedMacros;
 
 public class WebSockets extends TwoArgFunction implements LuaPlugin {
 	public WebSockets() { }
@@ -84,6 +85,8 @@ class WebSocket extends LuaTable {
 				public void onOpen(ServerHandshake handshakedata) {
 					LuaValue onOpenFunction = get("onOpen");
 					if(onOpenFunction.isfunction()) {
+						org.luaj.vm2_v3_0_1.LuaThread luaThread = new org.luaj.vm2_v3_0_1.LuaThread(AdvancedMacros.globals, onOpenFunction);
+						AdvancedMacros.globals.setCurrentLuaThread(luaThread);
 						onOpenFunction.invoke();
 					}
 				}
@@ -92,6 +95,8 @@ class WebSocket extends LuaTable {
 				public void onMessage(String message) {
 					LuaValue onMessageFunction = get("onMessage");
 					if(onMessageFunction.isfunction()) {
+						org.luaj.vm2_v3_0_1.LuaThread luaThread = new org.luaj.vm2_v3_0_1.LuaThread(AdvancedMacros.globals, onMessageFunction);
+						AdvancedMacros.globals.setCurrentLuaThread(luaThread);
 						onMessageFunction.invoke(LuaValue.valueOf(message));
 					}
 				}
@@ -100,6 +105,8 @@ class WebSocket extends LuaTable {
 				public void onClose(int code, String reason, boolean remote) {
 					LuaValue onCloseFunction = get("onClose");
 					if(onCloseFunction.isfunction()) {
+						org.luaj.vm2_v3_0_1.LuaThread luaThread = new org.luaj.vm2_v3_0_1.LuaThread(AdvancedMacros.globals, onCloseFunction);
+						AdvancedMacros.globals.setCurrentLuaThread(luaThread);
 						onCloseFunction.invoke(LuaValue.varargsOf(LuaValue.valueOf(code), LuaValue.valueOf(reason), LuaValue.valueOf(remote)));
 					}
 				}
@@ -108,6 +115,8 @@ class WebSocket extends LuaTable {
 				public void onError(Exception ex) {
 					LuaValue onErrorFunction = get("onError");
 					if(onErrorFunction.isfunction()) {
+						org.luaj.vm2_v3_0_1.LuaThread luaThread = new org.luaj.vm2_v3_0_1.LuaThread(AdvancedMacros.globals, onErrorFunction);
+						AdvancedMacros.globals.setCurrentLuaThread(luaThread);
 						onErrorFunction.invoke(LuaValue.valueOf(ex.getMessage()));
 					}
 				}

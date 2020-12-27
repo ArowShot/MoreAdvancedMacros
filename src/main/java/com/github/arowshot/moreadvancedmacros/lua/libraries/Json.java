@@ -32,7 +32,7 @@ public class Json extends TwoArgFunction implements LuaPlugin {
 	        	String json = arg.checkjstring();
 	    		JsonParser parser = new JsonParser();
 	    		
-	    		JsonObject o = parser.parse(json).getAsJsonObject();
+	    		JsonElement o = parser.parse(json);
 	    		
 				return toLua(o);
 			}
@@ -85,7 +85,7 @@ public class Json extends TwoArgFunction implements LuaPlugin {
 		LuaValue ret = LuaValue.NIL;
 		if(o.isJsonArray()) {
 			ret = tableOf();
-			int i = 0;
+			int i = 1;
 			for(JsonElement el : (JsonArray) o) {
 				ret.set(i, toLua(el));
 				i++;

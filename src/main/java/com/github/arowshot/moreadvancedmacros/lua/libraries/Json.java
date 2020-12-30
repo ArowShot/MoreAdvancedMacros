@@ -93,7 +93,6 @@ public class Json extends TwoArgFunction implements LuaPlugin {
 		} else if(o.isJsonObject()) {
 			ret = tableOf();
 			for(Entry<String, JsonElement> ent : ((JsonObject)o).entrySet()) {
-				System.out.println(ent.getKey());
 				ret.set(ent.getKey(), toLua(ent.getValue()));
 			}
 		} else if(o.isJsonPrimitive()) {

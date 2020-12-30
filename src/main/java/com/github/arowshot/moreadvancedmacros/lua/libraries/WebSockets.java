@@ -22,7 +22,6 @@ public class WebSockets extends TwoArgFunction implements LuaPlugin {
 	public LuaValue call(LuaValue modname, LuaValue env) {
 		LuaValue library = tableOf();
 		library.set("new", new newWs());
-		//env.set("websockets", library);
 		return library;
 	}
 	

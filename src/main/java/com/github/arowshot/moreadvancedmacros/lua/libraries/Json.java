@@ -48,37 +48,88 @@ public class Json extends TwoArgFunction implements LuaPlugin {
 		return library;
 	}
 	
-	public JsonElement toJson(LuaValue l) {
-		JsonElement ret = JsonNull.INSTANCE;
-		
-		switch(l.type()) {
-		case LuaValue.TBOOLEAN:
-			ret = new JsonPrimitive(l.toboolean());
-			break;
-		case LuaValue.TINT:
-			ret = new JsonPrimitive(l.toint());
-			break;
-		case LuaValue.TNUMBER:
-			ret = new JsonPrimitive(l.todouble());
-			break;
-		case LuaValue.TSTRING:
-			ret = new JsonPrimitive(l.tojstring());
-			break;
-		case LuaValue.TTABLE:
-			JsonObject j = new JsonObject();
-			LuaValue k = LuaValue.NONE;
-			while(true) {
-				Varargs n = l.next(k);
-				if((k = n.arg1()).isnil())
-					break;
-				LuaValue v = n.arg(2);
-				j.add(k.tojstring(), toJson(v));
-			}
-			ret = j;
-			break;
+	public JsonArray toJsonArray(LuaValue l) {
+		LuaValue metatable = l.getmetatable();
+		LuaValue arrayMeta;
+		try {
+			arrayMeta = metatable.get("__array");
+		} catch(Exception e) {
+			arrayMeta = LuaValue.NIL;
 		}
 		
-		return ret;
+		if(arrayMeta.isboolean()) {
+			if(arrayMeta.checkboolean()) {
+				// Force array
+				JsonArray array = new JsonArray();
+				
+				LuaValue key = LuaValue.NIL;
+				while (true) {
+				    Varargs nextPair = l.next(key);
+				    if ((key = nextPair.arg1()).isnil())
+				        break;
+				    LuaValue value = nextPair.arg(2);
+				    array.add(toJson(value));
+				}
+				
+				return array;
+			} else {
+				// Force object
+				throw new RuntimeException("Lua table is not an array");
+			}
+		} else {
+			// No behavior specified, auto detect array
+			JsonArray array = new JsonArray();
+
+			LuaValue key = LuaValue.NIL;
+			int i = 1;
+			while (true) {
+			    Varargs nextPair = l.next(key);
+			    if ((key = nextPair.arg1()).isnil())
+			        break;
+			    if(!(key.isint() && key.checkint() == i)) {
+					throw new RuntimeException("Could not convert Lua table to JSON table");
+			    }
+			    i++;
+			    LuaValue value = nextPair.arg(2);
+			    array.add(toJson(value));
+			}
+			
+			return array;
+		}
+	}
+	
+	public JsonObject toJsonObject(LuaValue l) {
+		JsonObject jsonObj = new JsonObject();
+		LuaValue key = LuaValue.NONE;
+		while (true) {
+		    Varargs nextPair = l.next(key);
+		    if ((key = nextPair.arg1()).isnil())
+		        break;
+		    LuaValue value = nextPair.arg(2);
+			jsonObj.add(key.tojstring(), toJson(value));
+		}
+		return jsonObj;
+	}
+	
+	public JsonElement toJson(LuaValue l) {
+		switch(l.type()) {
+		case LuaValue.TBOOLEAN:
+			return new JsonPrimitive(l.toboolean());
+		case LuaValue.TINT:
+			return new JsonPrimitive(l.toint());
+		case LuaValue.TNUMBER:
+			return new JsonPrimitive(l.todouble());
+		case LuaValue.TSTRING:
+			return new JsonPrimitive(l.tojstring());
+		case LuaValue.TTABLE:
+			try {
+				return toJsonArray(l);
+			} catch(Exception e) {
+				return toJsonObject(l);
+			}
+		}
+		
+		return JsonNull.INSTANCE;
 	}
 	
 	public LuaValue toLua(JsonElement o) {

@@ -30,7 +30,7 @@ import com.theincgi.advancedMacros.publicInterfaces.LuaPlugin;
 public class MoreAdvancedMacros
 {
     public static final String MODID = "moreadvancedmacros";
-    public static final String VERSION = "2.0.1";
+    public static final String VERSION = "3.0.0";
     public static List<LuaPlugin> libraries = new ArrayList<LuaPlugin>();
     
     private JarLibSearcher jarLibSearcher;
